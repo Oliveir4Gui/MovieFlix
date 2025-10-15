@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "category")
-@Getter
 @Data
+@Table(name = "category")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
+
 public class Category {
 
     @Id
@@ -18,4 +17,20 @@ public class Category {
 
     @Column(length = 100, nullable = false)
     private String name;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
