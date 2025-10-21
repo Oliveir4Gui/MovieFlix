@@ -29,4 +29,19 @@ public class MovieController {
         return ResponseEntity.ok(movieService.getAll().stream()
                 .map(movie -> MovieMapper.toMovieResponse(movie)).toList());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieResponse> getById(@PathVariable Long id){
+      return movieService.getById(id)
+                .map(movie ->ResponseEntity.ok(MovieMapper.toMovieResponse(movie)))
+              .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieResponse> update(@PathVariable Long id, @RequestBody MovieRequest request){
+    return movieService.update(id,MovieMapper.toMovie(request))
+            .map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponse(movie)))
+            .orElse(ResponseEntity.notFound().build());
+
+    }
 }
