@@ -49,4 +49,11 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest category){
+        return categoryService.updateCategory(id, CategoryMapper.toCategory(category))
+                .map(category1 -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(category1)))
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

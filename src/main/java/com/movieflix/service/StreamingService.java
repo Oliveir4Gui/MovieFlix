@@ -30,4 +30,16 @@ public class StreamingService {
     public void deleteById(Long id){
         streamingRepository.deleteById(id);
     }
+
+    public Optional<Streaming> updateStreaming(Long id, Streaming streaming){
+        Optional<Streaming> streamingOptional = streamingRepository.findById(id);
+        if(streamingOptional.isPresent()){
+           Streaming savedStreaming = streamingOptional.get();
+           savedStreaming.setName(streaming.getName());
+            streamingRepository.save(savedStreaming);
+           return Optional.of(savedStreaming);
+
+        }
+        return Optional.empty();
+    }
 }

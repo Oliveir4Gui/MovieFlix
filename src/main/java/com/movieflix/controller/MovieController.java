@@ -6,6 +6,7 @@ import com.movieflix.entity.Movie;
 import com.movieflix.mapper.MovieMapper;
 import com.movieflix.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,4 +45,17 @@ public class MovieController {
             .orElse(ResponseEntity.notFound().build());
 
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long category){
+       return ResponseEntity.ok(movieService.findByCategory(category).stream()
+               .map(movie -> MovieMapper.toMovieResponse(movie)).toList());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteById(@RequestParam Long id){
+     movieService.deleteById(id);
+     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
