@@ -6,15 +6,18 @@ import com.movieflix.controller.request.UserRequest;
 import com.movieflix.controller.response.LoginResponse;
 import com.movieflix.controller.response.UserResponse;
 import com.movieflix.entity.User;
+import com.movieflix.exception.UsernameOrPasswordInvalid;
 import com.movieflix.mapper.UserMapper;
 import com.movieflix.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,11 +41,20 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
-        Authentication authentication = authenticationManager.authenticate(userAndPass);
-        User currentUser = (User) authentication.getPrincipal();
-        String token = tokenService.generateToken(currentUser);
-        return ResponseEntity.ok(new LoginResponse(token));
+        try{
+            UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
+
+            Authentication authentication = authenticationManager.authenticate(userAndPass);
+
+            User currentUser = (User) authentication.getPrincipal();
+
+            String token = tokenService.generateToken(currentUser);
+
+            return ResponseEntity.ok(new LoginResponse(token));
+
+        }catch (BadCredentialsException e){
+            throw new UsernameOrPasswordInvalid("Invalid email or password");
+        }
     }
 
 
