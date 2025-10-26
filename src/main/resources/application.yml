@@ -17,3 +17,8 @@ spring:
 
 server:
   port: 8080
+
+
+movieflix:
+    security:
+      secret: "JDNASFAS54F41681"
