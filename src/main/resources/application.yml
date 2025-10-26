@@ -18,6 +18,17 @@ spring:
 server:
   port: 8080
 
+springdoc:
+  api-docs:
+    path: /api/api-docs
+  swagger-ui:
+    path: /swagger/index.html
+
+# Para debug - mostre todos os logs
+logging:
+  level:
+    org.springdoc: DEBUG
+    com.movieflix: DEBUG
 
 movieflix:
     security:

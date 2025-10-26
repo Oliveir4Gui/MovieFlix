@@ -30,6 +30,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize-> authorize.requestMatchers(HttpMethod.POST,"/movieflix/auth/register").permitAll()
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST,"/movieflix/auth/login").permitAll()
+                        .requestMatchers(
+                                "/api/api-docs/**",
+                                "/swagger/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/webjars/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
